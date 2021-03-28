@@ -8,58 +8,89 @@
 [ext_resource path="res://asset/script/detection_input.gd" type="Script" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 168, 240 )
+extents = Vector2( 168, 248 )
 
 [node name="touch_input" type="Node"]
 script = ExtResource( 5 )
 
-[node name="h_container" type="HBoxContainer" parent="."]
+[node name="v_container" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="left_input" type="Control" parent="h_container"]
+[node name="h_top_ui" type="HBoxContainer" parent="v_container"]
+margin_right = 1024.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 1024, 100 )
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="exit_button" type="Button" parent="v_container/h_top_ui"]
+margin_left = 924.0
+margin_right = 1024.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 100, 50 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Exit"
+
+[node name="h_input_ui" type="HBoxContainer" parent="v_container"]
+margin_top = 104.0
+margin_right = 1024.0
+margin_bottom = 604.0
+rect_min_size = Vector2( 1024, 500 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="left_input" type="Control" parent="v_container/h_input_ui"]
 margin_right = 338.0
-margin_bottom = 600.0
+margin_bottom = 500.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="area" type="Area2D" parent="h_container/left_input"]
+[node name="area" type="Area2D" parent="v_container/h_input_ui/left_input"]
+position = Vector2( 0, -92 )
 script = ExtResource( 6 )
 
-[node name="joystick" type="Sprite" parent="h_container/left_input/area"]
+[node name="joystick" type="Sprite" parent="v_container/h_input_ui/left_input/area"]
 position = Vector2( 154, 424 )
 scale = Vector2( 2, 2 )
 
-[node name="circle_main" type="Sprite" parent="h_container/left_input/area/joystick"]
+[node name="circle_main" type="Sprite" parent="v_container/h_input_ui/left_input/area/joystick"]
 self_modulate = Color( 1, 1, 1, 0.32549 )
 texture = ExtResource( 1 )
 
-[node name="touchscreen_input" type="TouchScreenButton" parent="h_container/left_input/area/joystick"]
+[node name="touchscreen_input" type="TouchScreenButton" parent="v_container/h_input_ui/left_input/area/joystick"]
 self_modulate = Color( 1, 1, 1, 0.619608 )
 position = Vector2( -24, -24 )
 normal = ExtResource( 3 )
 pressed = ExtResource( 2 )
 script = ExtResource( 4 )
 
-[node name="shape" type="CollisionShape2D" parent="h_container/left_input/area"]
-position = Vector2( 168, 360 )
+[node name="shape" type="CollisionShape2D" parent="v_container/h_input_ui/left_input/area"]
+position = Vector2( 168, 344 )
 shape = SubResource( 1 )
 
-[node name="center_input" type="Control" parent="h_container"]
+[node name="center_input" type="Control" parent="v_container/h_input_ui"]
 margin_left = 342.0
 margin_right = 681.0
-margin_bottom = 600.0
+margin_bottom = 500.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="right_input" type="Control" parent="h_container"]
+[node name="right_input" type="Control" parent="v_container/h_input_ui"]
 margin_left = 685.0
 margin_right = 1024.0
-margin_bottom = 600.0
+margin_bottom = 500.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-[connection signal="joystick" from="h_container/left_input/area/joystick/touchscreen_input" to="." method="_on_touchscreen_input_joystick"]
+[connection signal="pressed" from="v_container/h_top_ui/exit_button" to="." method="_on_exit_button_pressed"]
+[connection signal="joystick" from="v_container/h_input_ui/left_input/area/joystick/touchscreen_input" to="." method="_on_touchscreen_input_joystick"]

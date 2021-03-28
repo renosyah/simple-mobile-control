@@ -16,6 +16,12 @@ func _physics_process(_delta):
 	motion.y = velocity.y
 	motion.y *= TAN30DEG
 	motion = motion.normalized() * MOTION_SPEED
+	
+	if motion.x == 0.0 || motion.y ==  0.0:
+		$animation.play("idle")
+	else:
+		$animation.play("walking")
+	
 	move_and_slide(motion)
 
 func _on_touch_input_on_joystick_move(position):
