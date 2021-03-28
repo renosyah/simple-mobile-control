@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://asset/schene/character.tscn" type="PackedScene" id=1]
+[ext_resource path="res://asset/schene/touch_input.tscn" type="PackedScene" id=2]
+[ext_resource path="res://asset/sprite/grass.png" type="Texture" id=3]
+
+[node name="main" type="Node"]
+
+[node name="bg" type="Sprite" parent="."]
+position = Vector2( 448.989, 294.419 )
+scale = Vector2( 2.5065, 1.67934 )
+texture = ExtResource( 3 )
+
+[node name="character" parent="." instance=ExtResource( 1 )]
+position = Vector2( 515.484, 306.384 )
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="character"]
+remote_path = NodePath("../../camera")
+
+[node name="camera" type="Camera2D" parent="."]
+position = Vector2( 515.484, 306.384 )
+current = true
+smoothing_enabled = true
+
+[node name="canvas" type="CanvasLayer" parent="camera"]
+
+[node name="touch_input" parent="camera/canvas" instance=ExtResource( 2 )]
+[connection signal="on_joystick_move" from="camera/canvas/touch_input" to="character" method="_on_touch_input_on_joystick_move"]
