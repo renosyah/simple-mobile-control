@@ -10,7 +10,7 @@ radius = 47.7473
 resource_name = "idle"
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:position")
+tracks/0/path = NodePath("sprite:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -22,7 +22,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 2.5 ), Vector2( 0, -1.5 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:rotation_degrees")
+tracks/1/path = NodePath("sprite:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -38,7 +38,7 @@ tracks/1/keys = {
 resource_name = "walking"
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/path = NodePath("sprite:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -56,10 +56,8 @@ script = ExtResource( 2 )
 [node name="collision" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, 0.908725 )
-rotation = 0.213076
-scale = Vector2( 1, 1.09 )
+[node name="sprite" type="Sprite" parent="."]
+position = Vector2( 0, -1.5 )
 texture = ExtResource( 1 )
 __meta__ = {
 "_editor_description_": ""
@@ -69,3 +67,6 @@ __meta__ = {
 playback_speed = 2.0
 anims/idle = SubResource( 2 )
 anims/walking = SubResource( 3 )
+
+[node name="remote_transform" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("..")
