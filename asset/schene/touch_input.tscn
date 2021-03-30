@@ -132,7 +132,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="attack_button" type="Button" parent="v_container/h_input_ui/right_input"]
-self_modulate = Color( 1, 1, 1, 0.32549 )
+self_modulate = Color( 1, 1, 1, 0.576471 )
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0

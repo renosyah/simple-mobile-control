@@ -1,11 +1,12 @@
 extends KinematicBody2D
 
+
 onready var rng = RandomNumberGenerator.new()
 onready var detection_area = $detection_area
 onready var sprite = $sprite
 onready var attact_delay = $attack_delay
 
-export var damage: = 15.0
+export var attack_damage: = 15.0
 export var hit_point: = 100.0 setget _set_hit_point
 export var acceleration: = 500
 export var max_speed: = 350
@@ -16,6 +17,10 @@ export var max_to_attack_distance: = 400.0
 export var attack_delay_value: = 1.0
 export var side = "player"
 export var texture: Texture
+
+onready var animation = $animation
+onready var animation_tree = $animation_tree
+onready var animation_state = animation_tree.get("parameters/playback")
 
 var target: KinematicBody2D = null
 
@@ -32,16 +37,16 @@ func _physics_process(delta):
 		sprite.flip_h = direction.x < 0
 	
 		if distance_to_target >= min_to_attack_distance and distance_to_target < max_to_attack_distance:
-			$animation.play("character_walking")
+			animation_state.travel("character_walking")
 			move_and_collide(direction * max_speed * delta)
 
 		if attact_delay.is_stopped() and distance_to_target <= attack_distance:
-			$animation.play("character_attack")
+			animation_state.travel("character_attack")
 			rng.randomize()
-			target.take_damage(rng.randf_range(damage/2, damage))
+			target.take_damage(rng.randf_range(attack_damage/2, attack_damage))
 			attact_delay.start()
 	else:
-		$animation.play("character_idle")
+		animation_state.travel("character_idle")
 
 func _on_detection_area_body_entered(body):
 	if body is KinematicBody2D and body.side != side:
@@ -62,7 +67,7 @@ func _on_detection_area_body_exited(body):
 	var distance_to_target = global_position.distance_to(body.global_position)
 	if distance_to_target < min_to_attack_distance:
 		target = null
-		$animation.play("character_idle")
+		animation_state.travel("character_idle")
 		set_physics_process(false)
 
 func _on_timer_reset_target_timeout():

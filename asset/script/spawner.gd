@@ -25,3 +25,4 @@ func spawn():
 func _on_timer_timeout():
 	if get_children().size() < (max_child + 1):
 		spawn()
+

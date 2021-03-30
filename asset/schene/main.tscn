@@ -5,9 +5,9 @@
 [ext_resource path="res://asset/sprite/grass.png" type="Texture" id=3]
 [ext_resource path="res://asset/sprite/purple_knight.png" type="Texture" id=4]
 [ext_resource path="res://asset/sprite/stone.png" type="Texture" id=5]
-[ext_resource path="res://asset/sprite/character.png" type="Texture" id=6]
+[ext_resource path="res://asset/sprite/blue_knight.png" type="Texture" id=6]
 [ext_resource path="res://asset/script/spawner.gd" type="Script" id=7]
-[ext_resource path="res://asset/sprite/enemy.png" type="Texture" id=8]
+[ext_resource path="res://asset/sprite/red_knight.png" type="Texture" id=8]
 [ext_resource path="res://asset/sprite/green_knight.png" type="Texture" id=9]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
@@ -148,6 +148,8 @@ compatibility_mode = true
 format = 1
 script = ExtResource( 2 )
 
+[node name="player" parent="." instance=ExtResource( 1 )]
+
 [node name="red_spawner" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
@@ -155,7 +157,7 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-side = "enemy"
+side = "1"
 unit_sprite = ExtResource( 8 )
 
 [node name="timer" type="Timer" parent="red_spawner"]
@@ -169,7 +171,7 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-side = "blue"
+side = "1"
 unit_sprite = ExtResource( 6 )
 
 [node name="timer" type="Timer" parent="blue_spawner"]
@@ -183,7 +185,7 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-side = "green"
+side = "2"
 unit_sprite = ExtResource( 9 )
 
 [node name="timer" type="Timer" parent="green_spawner"]
@@ -197,14 +199,15 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-side = "purple"
+side = "2"
 unit_sprite = ExtResource( 4 )
 
 [node name="timer" type="Timer" parent="purple_spawner"]
 wait_time = 5.0
 autostart = true
 
-[node name="player" parent="." instance=ExtResource( 1 )]
+[node name="main_camera" type="Camera2D" parent="."]
+current = true
 [connection signal="timeout" from="red_spawner/timer" to="red_spawner" method="_on_timer_timeout"]
 [connection signal="timeout" from="blue_spawner/timer" to="blue_spawner" method="_on_timer_timeout"]
 [connection signal="timeout" from="green_spawner/timer" to="green_spawner" method="_on_timer_timeout"]
