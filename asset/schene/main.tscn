@@ -1,11 +1,14 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://asset/schene/character.tscn" type="PackedScene" id=1]
-[ext_resource path="res://asset/schene/touch_input.tscn" type="PackedScene" id=2]
+[ext_resource path="res://asset/schene/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://asset/script/tile_generator.gd" type="Script" id=2]
 [ext_resource path="res://asset/sprite/grass.png" type="Texture" id=3]
-[ext_resource path="res://asset/script/main.gd" type="Script" id=4]
+[ext_resource path="res://asset/sprite/purple_knight.png" type="Texture" id=4]
 [ext_resource path="res://asset/sprite/stone.png" type="Texture" id=5]
-[ext_resource path="res://asset/schene/enemy.tscn" type="PackedScene" id=6]
+[ext_resource path="res://asset/sprite/character.png" type="Texture" id=6]
+[ext_resource path="res://asset/script/spawner.gd" type="Script" id=7]
+[ext_resource path="res://asset/sprite/enemy.png" type="Texture" id=8]
+[ext_resource path="res://asset/sprite/green_knight.png" type="Texture" id=9]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
@@ -138,27 +141,71 @@ points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 6/z_index = 0
 
 [node name="main" type="Node"]
-script = ExtResource( 4 )
 
 [node name="tile_map" type="TileMap" parent="."]
 tile_set = SubResource( 4 )
 compatibility_mode = true
 format = 1
+script = ExtResource( 2 )
 
-[node name="enemy" parent="." instance=ExtResource( 6 )]
+[node name="red_spawner" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+side = "enemy"
+unit_sprite = ExtResource( 8 )
 
-[node name="character" parent="." instance=ExtResource( 1 )]
-position = Vector2( 515.484, 306.384 )
-camera_node = NodePath("../camera")
+[node name="timer" type="Timer" parent="red_spawner"]
+wait_time = 5.0
+autostart = true
 
-[node name="camera" type="Camera2D" parent="."]
-position = Vector2( 515.484, 306.384 )
-current = true
-smoothing_enabled = true
+[node name="blue_spawner" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+side = "blue"
+unit_sprite = ExtResource( 6 )
 
-[node name="canvas" type="CanvasLayer" parent="camera"]
+[node name="timer" type="Timer" parent="blue_spawner"]
+wait_time = 5.0
+autostart = true
 
-[node name="touch_input" parent="camera/canvas" instance=ExtResource( 2 )]
-[connection signal="hit_point_change" from="character" to="camera/canvas/touch_input" method="_on_character_hit_point_change"]
-[connection signal="on_exit_button_press" from="camera/canvas/touch_input" to="." method="_on_touch_input_on_exit_button_press"]
-[connection signal="on_joystick_move" from="camera/canvas/touch_input" to="character" method="_on_touch_input_on_joystick_move"]
+[node name="green_spawner" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+side = "green"
+unit_sprite = ExtResource( 9 )
+
+[node name="timer" type="Timer" parent="green_spawner"]
+wait_time = 5.0
+autostart = true
+
+[node name="purple_spawner" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+side = "purple"
+unit_sprite = ExtResource( 4 )
+
+[node name="timer" type="Timer" parent="purple_spawner"]
+wait_time = 5.0
+autostart = true
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+[connection signal="timeout" from="red_spawner/timer" to="red_spawner" method="_on_timer_timeout"]
+[connection signal="timeout" from="blue_spawner/timer" to="blue_spawner" method="_on_timer_timeout"]
+[connection signal="timeout" from="green_spawner/timer" to="green_spawner" method="_on_timer_timeout"]
+[connection signal="timeout" from="purple_spawner/timer" to="purple_spawner" method="_on_timer_timeout"]
