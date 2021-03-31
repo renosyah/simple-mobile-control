@@ -55,7 +55,10 @@ func _physics_process(_delta):
 			move(_delta)
 		ATTACK:
 			attack(_delta)
-
+			
+func _input(event):
+	if event.is_action_pressed("attack"):
+		_on_touch_input_on_attack_button_press()
 
 func move(_delta):
 	var motion = Vector2.ZERO
