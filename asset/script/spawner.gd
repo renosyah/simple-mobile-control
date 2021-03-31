@@ -14,9 +14,8 @@ func _ready():
 
 func spawn():
 	rng.randomize()
-	var pos = Vector2(rng.randf_range(-600, 600),rng.randf_range(-600, 600))
 	var spawn_entity = load(entity_resources_path).instance()
-	spawn_entity.position = pos
+	spawn_entity.position = Vector2(rng.randf_range(-500, 500),rng.randf_range(-500, 500))
 	spawn_entity.texture = unit_sprite
 	spawn_entity.side = side
 	add_child(spawn_entity)

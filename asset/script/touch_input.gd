@@ -18,7 +18,13 @@ func _on_attack_button_pressed():
 	emit_signal("on_attack_button_press")
 
 func _on_player_unit_hit_point_change(hp):
-	$v_container/h_top_ui/hit_point.value = hp
+	$v_container/h_top_ui/bar/hit_point.value = hp
 
 func _on_player_unit_enemy_in_range(is_attackable):
 	$v_container/h_input_ui/right_input/attack_button.visible = is_attackable
+
+func _on_player_unit_stamina_point_change(stamina):
+	$v_container/h_top_ui/bar/stamina_point.value = stamina
+
+
+

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://asset/script/player_spawner.gd" type="Script" id=1]
 [ext_resource path="res://asset/script/tile_generator.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://asset/script/spawner.gd" type="Script" id=7]
 [ext_resource path="res://asset/sprite/red_knight.png" type="Texture" id=8]
 [ext_resource path="res://asset/sprite/green_knight.png" type="Texture" id=9]
+[ext_resource path="res://asset/sprite/died.jpg" type="Texture" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
@@ -161,7 +162,7 @@ camera_node = NodePath("../main_camera")
 
 [node name="timer" type="Timer" parent="player_spawner"]
 wait_time = 5.0
-autostart = true
+one_shot = true
 
 [node name="blue_spawner" type="Control" parent="."]
 margin_right = 40.0
@@ -223,29 +224,16 @@ autostart = true
 current = true
 smoothing_enabled = true
 
-[node name="panel_died" type="Panel" parent="main_camera"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -240.0
-margin_top = -128.0
-margin_right = 240.0
-margin_bottom = 136.0
+[node name="panel_died" type="TextureRect" parent="main_camera"]
+margin_left = -300.0
+margin_top = -150.0
+margin_right = 300.0
+margin_bottom = 150.0
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 1
 __meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="main_camera/panel_died"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "YOU DIED"
-align = 1
-valign = 1
-autowrap = true
-uppercase = true
-__meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 [connection signal="timeout" from="player_spawner/timer" to="player_spawner" method="_on_timer_timeout"]
 [connection signal="timeout" from="blue_spawner/timer" to="blue_spawner" method="_on_timer_timeout"]

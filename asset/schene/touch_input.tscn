@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://asset/sprite/circle_main.png" type="Texture" id=1]
 [ext_resource path="res://asset/sprite/circle_press.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://asset/sprite/hp.png" type="Texture" id=7]
 [ext_resource path="res://asset/sprite/hp_empty.png" type="Texture" id=8]
 [ext_resource path="res://asset/sprite/attack.png" type="Texture" id=9]
+[ext_resource path="res://asset/sprite/stamina.png" type="Texture" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 168, 248 )
@@ -54,16 +55,37 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="hit_point" type="TextureProgress" parent="v_container/h_top_ui"]
+[node name="bar" type="VBoxContainer" parent="v_container/h_top_ui"]
 margin_left = 138.0
-margin_right = 538.0
+margin_right = 738.0
+margin_bottom = 44.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hit_point" type="TextureProgress" parent="v_container/h_top_ui/bar"]
+margin_right = 600.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 400, 20 )
+rect_min_size = Vector2( 600, 20 )
 size_flags_horizontal = 2
 size_flags_vertical = 0
 value = 100.0
 texture_under = ExtResource( 8 )
 texture_progress = ExtResource( 7 )
+nine_patch_stretch = true
+
+[node name="stamina_point" type="TextureProgress" parent="v_container/h_top_ui/bar"]
+margin_top = 24.0
+margin_right = 500.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 500, 20 )
+size_flags_horizontal = 2
+size_flags_vertical = 0
+value = 100.0
+texture_under = ExtResource( 8 )
+texture_progress = ExtResource( 10 )
 nine_patch_stretch = true
 
 [node name="exit_button" type="Button" parent="v_container/h_top_ui"]

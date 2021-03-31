@@ -11,7 +11,7 @@
 radius = 24.0
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 80.0504
+radius = 100.0
 
 [sub_resource type="AnimationNodeAnimation" id=3]
 animation = "character_attack"
@@ -48,7 +48,7 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="sprite" type="Sprite" parent="."]
-position = Vector2( 0, 0.856274 )
+position = Vector2( 0, 0.767171 )
 texture = ExtResource( 1 )
 __meta__ = {
 "_editor_description_": ""
@@ -74,5 +74,12 @@ parameters/playback = ExtResource( 6 )
 __meta__ = {
 "_editor_description_": ""
 }
+
+[node name="stamina_regeneration_time" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="audio" type="AudioStreamPlayer2D" parent="."]
 [connection signal="body_entered" from="attack_area" to="." method="_on_attack_area_body_entered"]
 [connection signal="body_exited" from="attack_area" to="." method="_on_attack_area_body_exited"]
+[connection signal="timeout" from="stamina_regeneration_time" to="." method="_on_stamina_regeneration_time_timeout"]
