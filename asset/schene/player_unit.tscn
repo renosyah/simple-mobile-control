@@ -48,7 +48,7 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="sprite" type="Sprite" parent="."]
-position = Vector2( 0, -0.726817 )
+position = Vector2( 0, -0.582568 )
 texture = ExtResource( 1 )
 __meta__ = {
 "_editor_description_": ""
@@ -74,8 +74,5 @@ parameters/playback = ExtResource( 6 )
 __meta__ = {
 "_editor_description_": ""
 }
-
-[node name="remote_transform" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("..")
 [connection signal="body_entered" from="attack_area" to="." method="_on_attack_area_body_entered"]
 [connection signal="body_exited" from="attack_area" to="." method="_on_attack_area_body_exited"]

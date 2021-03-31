@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 signal hit_point_change(hp)
+signal on_unit_died()
 
 var joystick_velocity = Vector2.ZERO
 var velocity = Vector2.ZERO
@@ -14,9 +15,9 @@ export var hit_point: = 100.0 setget _set_hit_point
 export var acceleration: = 500
 export var max_speed: = 350
 export var friction : = 500
-export var side = "blue"
+export var side = "1"
 export var texture: Texture
-export(NodePath) var camera_node
+
 
 onready var animation = $animation
 onready var animation_tree = $animation_tree
@@ -29,12 +30,10 @@ enum {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	set_remote_transform()
+	position = Vector2(rng.randf_range(-600, 600),rng.randf_range(-600, 600))
+	set_physics_process(true)
+	pass
 	
-func set_remote_transform():
-	$remote_transform.remote_path = NodePath("../" + str(camera_node))
-	$remote_transform.force_update_cache()
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):
 	match state:
@@ -81,6 +80,8 @@ func _on_touch_input_on_attack_button_press():
 func take_damage(damage):
 	self.hit_point -= damage
 	if self.hit_point <= 0:
+		set_physics_process(false)
+		emit_signal("on_unit_died")
 		queue_free()
 
 func _set_hit_point(hp):

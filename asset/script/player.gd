@@ -1,22 +1,18 @@
 extends Control
 
- 
-export var damage: = 15.0
-export var acceleration: = 500
-export var max_speed: = 350
-export var friction : = 500
-export var attack_distance: = 100.0 #80.0
-export var min_to_attack_distance: = 100.0 #100.0
-export var max_to_attack_distance: = 400.0
-export var attack_delay_value: = 1.0
-export var side = "player"
-export var texture: Texture
-export var position : = Vector2.ZERO
+signal on_unit_died(node)
+
+export(NodePath) var camera_node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$camera.current = true
+	var remote_transform = RemoteTransform2D.new()
+	remote_transform.remote_path = NodePath("../../" + str(camera_node))
+	$player_unit.add_child(remote_transform)
+	remote_transform.force_update_cache()
 
 func _on_touch_input_on_exit_button_pressed():
 	get_tree().quit(0)
 
+func _on_player_unit_on_unit_died():
+	emit_signal("on_unit_died", self)

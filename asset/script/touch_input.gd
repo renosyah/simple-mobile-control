@@ -13,9 +13,6 @@ func _on_touchscreen_input_joystick(position):
 
 func _on_exit_button_pressed():
 	emit_signal("on_exit_button_pressed")
-	
-func _exit_tree():
-	free()
 
 func _on_attack_button_pressed():
 	emit_signal("on_attack_button_press")
