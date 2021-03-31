@@ -18,7 +18,6 @@ export var friction : = 500
 export var side = "1"
 export var texture: Texture
 
-
 onready var animation = $animation
 onready var animation_tree = $animation_tree
 onready var animation_state = animation_tree.get("parameters/playback")
@@ -30,7 +29,6 @@ enum {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	position = Vector2(rng.randf_range(-600, 600),rng.randf_range(-600, 600))
 	set_physics_process(true)
 	pass
 	

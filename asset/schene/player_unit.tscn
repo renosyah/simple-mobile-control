@@ -48,7 +48,7 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="sprite" type="Sprite" parent="."]
-position = Vector2( 0, -0.582568 )
+position = Vector2( 0, 0.856274 )
 texture = ExtResource( 1 )
 __meta__ = {
 "_editor_description_": ""
