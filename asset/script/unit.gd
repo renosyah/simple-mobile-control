@@ -24,12 +24,14 @@ export var attack_delay_value: = 1.0
 export var side = "player"
 export var texture: Texture
 
-var killed_sound = [
+var is_dead = false
+
+const killed_sound = [
 		preload("res://asset/sound/maledeath3.wav"),
 		preload("res://asset/sound/maledeath4.wav")
 
 ]
-var combats_sound = [
+const combats_sound = [
 	preload("res://asset/sound/stab1.wav"),
 	preload("res://asset/sound/stab2.wav"),
 	preload("res://asset/sound/stab3.wav")
@@ -41,7 +43,7 @@ var target: KinematicBody2D = null
 func _ready():
 	sprite.texture = texture
 	attack_delay.wait_time = attack_delay_value
-	set_physics_process(false)
+	set_physics_process(true)
 	
 
 func _physics_process(delta):
@@ -65,21 +67,20 @@ func _physics_process(delta):
 		animation_state.travel("character_idle")
 
 func _on_detection_area_body_entered(body):
-	if body is KinematicBody2D and body.side != side:
+	if  !is_dead and body is KinematicBody2D and body.side != side:
 		target = body
-		set_physics_process(true)
 	
 func take_damage(damage):
-	rng.randomize()
 	self.hit_point -= damage
 	if self.hit_point <= 0:
+		set_physics_process(false)
+		target = null
+		is_dead = true
+		animation_state.travel("character_dead")
 		audio.stream = killed_sound[rng.randf_range(0,killed_sound.size())]
-		audio.connect("finished",self,"_on_dead_sound_end")
 		audio.play()
 
-func _on_dead_sound_end():
-	audio.disconnect("finished",self,"_on_dead_sound_end")
-	set_physics_process(false)
+func _on_dead_animation_end():
 	queue_free()
 
 func _set_hit_point(hp):
@@ -87,13 +88,13 @@ func _set_hit_point(hp):
 	$hit_point.value = hit_point
 
 func _on_detection_area_body_exited(_body):
-	if _body is KinematicBody2D:
+	if _body is KinematicBody2D and !is_dead:
 		var distance_to_target = global_position.distance_to(_body.global_position)
 		if distance_to_target < min_to_attack_distance:
 			target = null
 			animation_state.travel("character_idle")
-			set_physics_process(false)
 
 func _on_timer_reset_target_timeout():
 	detection_area.monitoring = false
 	detection_area.monitoring = true
+	

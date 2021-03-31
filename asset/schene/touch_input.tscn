@@ -32,6 +32,7 @@ margin_right = 1024.0
 margin_bottom = 100.0
 grow_horizontal = 2
 rect_min_size = Vector2( 1024, 100 )
+rect_clip_content = true
 size_flags_horizontal = 3
 
 [node name="panel" type="Panel" parent="v_container/h_top_ui"]
@@ -57,9 +58,9 @@ __meta__ = {
 
 [node name="bar" type="VBoxContainer" parent="v_container/h_top_ui"]
 margin_left = 138.0
-margin_right = 738.0
+margin_right = 920.0
 margin_bottom = 44.0
-size_flags_horizontal = 2
+size_flags_horizontal = 3
 size_flags_vertical = 0
 __meta__ = {
 "_edit_use_anchors_": false

@@ -171,6 +171,7 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+attack_damage = 15.0
 side = "1"
 unit_sprite = ExtResource( 6 )
 
@@ -185,6 +186,7 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+attack_damage = 15.0
 side = "2"
 unit_sprite = ExtResource( 8 )
 
@@ -199,6 +201,7 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+attack_damage = 15.0
 side = "3"
 unit_sprite = ExtResource( 9 )
 
@@ -213,6 +216,7 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+attack_damage = 15.0
 side = "4"
 unit_sprite = ExtResource( 4 )
 
@@ -220,21 +224,21 @@ unit_sprite = ExtResource( 4 )
 wait_time = 5.0
 autostart = true
 
-[node name="main_camera" type="Camera2D" parent="."]
-current = true
-smoothing_enabled = true
+[node name="canvas" type="CanvasLayer" parent="."]
 
-[node name="panel_died" type="TextureRect" parent="main_camera"]
-margin_left = -300.0
-margin_top = -150.0
-margin_right = 300.0
-margin_bottom = 150.0
+[node name="panel_died" type="TextureRect" parent="canvas"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 texture = ExtResource( 10 )
 expand = true
 stretch_mode = 1
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_use_anchors_": false
 }
+
+[node name="main_camera" type="Camera2D" parent="."]
+current = true
+smoothing_enabled = true
 [connection signal="timeout" from="player_spawner/timer" to="player_spawner" method="_on_timer_timeout"]
 [connection signal="timeout" from="blue_spawner/timer" to="blue_spawner" method="_on_timer_timeout"]
 [connection signal="timeout" from="red_spawner/timer" to="red_spawner" method="_on_timer_timeout"]

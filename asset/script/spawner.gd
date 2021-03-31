@@ -2,6 +2,7 @@ extends Control
 
 onready var rng = RandomNumberGenerator.new()
 
+export(float) var attack_damage = 15.0
 export(String) var entity_resources_path = "res://asset/schene/unit.tscn"
 export(int) var max_child = 5
 export(String) var side
@@ -16,6 +17,7 @@ func spawn():
 	rng.randomize()
 	var spawn_entity = load(entity_resources_path).instance()
 	spawn_entity.position = Vector2(rng.randf_range(-500, 500),rng.randf_range(-500, 500))
+	spawn_entity.attack_damage = attack_damage
 	spawn_entity.texture = unit_sprite
 	spawn_entity.side = side
 	add_child(spawn_entity)

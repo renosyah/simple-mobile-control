@@ -1,7 +1,7 @@
 extends Control
 
 onready var rng = RandomNumberGenerator.new()
-onready var panel_died = get_node(NodePath("../main_camera/panel_died"))
+onready var panel_died = $".."/canvas/panel_died
 
 export(NodePath) var camera_node
 
