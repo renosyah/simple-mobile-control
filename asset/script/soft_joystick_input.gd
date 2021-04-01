@@ -1,12 +1,13 @@
 extends TouchScreenButton
 
-onready var radius = Vector2(24, 24)
-var boundary = 48
+signal joystick(position)
+
 var ongoing_drag = -1
 var return_accel = 20
 var threshold = 10
 
-signal joystick
+export var radius = Vector2(24, 24)
+export var boundary = 48
 
 func _process(delta):
 	if ongoing_drag == -1:

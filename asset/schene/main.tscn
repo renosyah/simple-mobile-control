@@ -171,7 +171,6 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-attack_damage = 15.0
 side = "1"
 unit_sprite = ExtResource( 6 )
 
@@ -186,7 +185,6 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-attack_damage = 15.0
 side = "2"
 unit_sprite = ExtResource( 8 )
 
@@ -201,7 +199,6 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-attack_damage = 15.0
 side = "3"
 unit_sprite = ExtResource( 9 )
 
@@ -216,7 +213,6 @@ script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-attack_damage = 15.0
 side = "4"
 unit_sprite = ExtResource( 4 )
 
@@ -227,6 +223,7 @@ autostart = true
 [node name="canvas" type="CanvasLayer" parent="."]
 
 [node name="panel_died" type="TextureRect" parent="canvas"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 10 )

@@ -39,13 +39,13 @@ switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=10]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=18]
+[sub_resource type="AnimationNodeStateMachineTransition" id=11]
 switch_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=19]
+[sub_resource type="AnimationNodeStateMachineTransition" id=12]
 switch_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=17]
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
 switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id=14]
@@ -57,7 +57,7 @@ states/character_idle/node = SubResource( 5 )
 states/character_idle/position = Vector2( 223, 147 )
 states/character_walking/node = SubResource( 6 )
 states/character_walking/position = Vector2( 523, 147 )
-transitions = [ "character_idle", "character_attack", SubResource( 7 ), "character_attack", "character_idle", SubResource( 8 ), "character_idle", "character_walking", SubResource( 9 ), "character_walking", "character_idle", SubResource( 10 ), "character_attack", "character_dead", SubResource( 18 ), "character_idle", "character_dead", SubResource( 19 ), "character_walking", "character_dead", SubResource( 17 ) ]
+transitions = [ "character_idle", "character_attack", SubResource( 7 ), "character_attack", "character_idle", SubResource( 8 ), "character_idle", "character_walking", SubResource( 9 ), "character_walking", "character_idle", SubResource( 10 ), "character_attack", "character_dead", SubResource( 11 ), "character_idle", "character_dead", SubResource( 12 ), "character_walking", "character_dead", SubResource( 13 ) ]
 start_node = "character_idle"
 
 [node name="unit" type="KinematicBody2D"]
@@ -67,8 +67,7 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="sprite" type="Sprite" parent="."]
-position = Vector2( 0, 16 )
-rotation = 1.57079
+position = Vector2( 0, -0.675096 )
 texture = ExtResource( 1 )
 
 [node name="detection_area" type="Area2D" parent="."]

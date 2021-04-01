@@ -1,17 +1,37 @@
 extends KinematicBody2D
 
+# const
+const killed_sound = [
+		preload("res://asset/sound/maledeath3.wav"),
+		preload("res://asset/sound/maledeath4.wav")
 
+]
+const combats_sound = [
+	preload("res://asset/sound/stab1.wav"),
+	preload("res://asset/sound/stab2.wav"),
+	preload("res://asset/sound/stab3.wav")
+]
+
+# signal
+
+
+# mutable variable
+var is_dead = false
+var target: KinematicBody2D = null
+
+
+# onready variable
 onready var rng = RandomNumberGenerator.new()
 onready var detection_area = $detection_area
 onready var sprite = $sprite
 onready var attack_delay = $attack_delay
 onready var targeting_sprite = $targeting_sprite
 onready var audio = $audio
-
 onready var animation = $animation
 onready var animation_tree = $animation_tree
 onready var animation_state = animation_tree.get("parameters/playback")
 
+# public variable
 export var attack_damage: = 15.0
 export var hit_point: = 100.0 setget _set_hit_point
 export var acceleration: = 500
@@ -24,20 +44,6 @@ export var attack_delay_value: = 1.0
 export var side = "player"
 export var texture: Texture
 
-var is_dead = false
-
-const killed_sound = [
-		preload("res://asset/sound/maledeath3.wav"),
-		preload("res://asset/sound/maledeath4.wav")
-
-]
-const combats_sound = [
-	preload("res://asset/sound/stab1.wav"),
-	preload("res://asset/sound/stab2.wav"),
-	preload("res://asset/sound/stab3.wav")
-]
-
-var target: KinematicBody2D = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -58,35 +64,59 @@ func _physics_process(delta):
 
 		if attack_delay.is_stopped() and distance_to_target <= attack_distance:
 			animation_state.travel("character_attack")
-			rng.randomize()
-			audio.stream = combats_sound[rng.randf_range(0,combats_sound.size())]
-			audio.play()
-			target.take_damage(rng.randf_range(attack_damage/2, attack_damage))
+			play_hit_sound()
+			target.take_damage(attack_damage)
 			attack_delay.start()
 	else:
 		animation_state.travel("character_idle")
 
-func _on_detection_area_body_entered(body):
-	if  !is_dead and body is KinematicBody2D and body.side != side:
-		target = body
-	
+
+#########################################################
+# unit hit point
 func take_damage(damage):
 	self.hit_point -= damage
 	if self.hit_point <= 0:
 		set_physics_process(false)
 		target = null
 		is_dead = true
-		animation_state.travel("character_dead")
-		audio.stream = killed_sound[rng.randf_range(0,killed_sound.size())]
-		audio.play()
-
-func _on_dead_animation_end():
-	queue_free()
+		play_dead_sound()
+		
 
 func _set_hit_point(hp):
 	hit_point = max(0,hp)
 	$hit_point.value = hit_point
+	
 
+#########################################################
+# unit hit dead sanimation end
+func _on_dead_animation_end():
+	queue_free()
+	
+
+#########################################################
+# unit hit and dead sound
+func play_dead_sound():
+	audio.stream = killed_sound[rng.randf_range(0,killed_sound.size())]
+	audio.connect("finished",self,"_on_dead_sound_end")
+	audio.play()
+	animation_state.travel("character_dead")
+	
+func _on_dead_sound_end():
+	audio.disconnect("finished",self,"_on_dead_sound_end")
+	set_physics_process(false)
+	
+	
+func play_hit_sound():
+	audio.stream = combats_sound[rng.randf_range(0,combats_sound.size())]
+	audio.play()
+	
+#########################################################
+# on enemy enter attack area of player unit
+func _on_detection_area_body_entered(body):
+	if  !is_dead and body is KinematicBody2D and body.side != side:
+		target = body
+
+# on enemy exit attack area of player unit
 func _on_detection_area_body_exited(_body):
 	if _body is KinematicBody2D and !is_dead:
 		var distance_to_target = global_position.distance_to(_body.global_position)
@@ -94,6 +124,9 @@ func _on_detection_area_body_exited(_body):
 			target = null
 			animation_state.travel("character_idle")
 
+
+#########################################################
+# reset detection each 1 second
 func _on_timer_reset_target_timeout():
 	detection_area.monitoring = false
 	detection_area.monitoring = true

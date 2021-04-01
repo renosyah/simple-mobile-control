@@ -8,7 +8,7 @@ export(NodePath) var camera_node
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	panel_died.visible = false
-	$timer.wait_time = 5
+	$timer.wait_time = 1
 	$timer.start()
 	pass # Replace with function body.
 

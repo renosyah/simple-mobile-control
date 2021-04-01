@@ -2,16 +2,17 @@ extends Control
 
 signal on_unit_died(node)
 
+onready var remote_transform = RemoteTransform2D.new()
+
 export(Vector2) var position
 export(NodePath) var camera_node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$player_unit.position = position
-	var remote_transform = RemoteTransform2D.new()
 	remote_transform.remote_path = NodePath("../../" + str(camera_node))
-	$player_unit.add_child(remote_transform)
 	remote_transform.force_update_cache()
+	$player_unit.add_child(remote_transform)
+	$player_unit.position = position
 
 func _on_touch_input_on_exit_button_pressed():
 	get_tree().quit(0)

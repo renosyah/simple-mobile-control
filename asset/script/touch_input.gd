@@ -1,5 +1,7 @@
 extends Node
 
+
+
 # broadcast to outside schene signal
 signal on_joystick_move(position)
 signal on_attack_button_press()
@@ -25,6 +27,3 @@ func _on_player_unit_enemy_in_range(is_attackable):
 
 func _on_player_unit_stamina_point_change(stamina):
 	$v_container/h_top_ui/bar/stamina_point.value = stamina
-
-
-
