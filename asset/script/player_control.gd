@@ -13,6 +13,9 @@ const combats_sound = [
 	preload("res://asset/sound/stab2.wav"),
 	preload("res://asset/sound/stab3.wav")
 ]
+const target_sprite_range = preload("res://asset/sprite/target.png")
+const target_sprite_melee = preload("res://asset/sprite/target_sword.png")
+
 enum {
 	MOVE,
 	ATTACK
@@ -27,6 +30,7 @@ signal on_unit_died()
 var joystick_velocity = Vector2.ZERO
 var velocity = Vector2.ZERO
 var targets: = []
+var range_targets: = []
 var state = MOVE
 
 # onready variable
@@ -41,8 +45,7 @@ onready var audio = $audio
 export var attack_damage: = 15.0
 export var hit_point: = 100.0 setget _set_hit_point
 export var stamina_point: = 100.0 setget _set_stamina_point
-export var acceleration: = 500
-export var max_speed: = 350
+export var max_speed: = 250
 export var friction : = 500
 export var side = "1"
 export var texture: Texture
@@ -112,7 +115,23 @@ func _on_touch_input_on_attack_button_press():
 func _input(event):
 	if event.is_action_pressed("attack"):
 		_on_touch_input_on_attack_button_press()
+		
+func _on_touch_input_on_throw_button_press():
+	if self.stamina_point <= 0.0 || range_targets.size() == 0:
+		return
+	for range_target in range_targets:
+		self.stamina_point -= 20
+		var direction = (range_target.global_position - global_position).normalized()
+		shoot_spear(direction)
 
+
+#########################################################
+# spawn spear
+func shoot_spear(dir):
+	var spear = preload("res://asset/schene/arrow.tscn").instance()
+	spear.attack_damage = attack_damage / 2
+	spear.lauching(global_position, dir)
+	add_child(spear)
 
 
 #########################################################
@@ -168,6 +187,7 @@ func _on_attack_area_body_entered(_body):
 		targets.append(_body)
 		for target in targets:
 			target.targeting_sprite.visible = true
+			target.targeting_sprite.texture = target_sprite_melee
 
 # on enemy exit attack area of player unit
 func _on_attack_area_body_exited(_body):
@@ -176,4 +196,15 @@ func _on_attack_area_body_exited(_body):
 	targets.erase(_body)
 
 
+func _on_attack_range_area_body_entered(_body):
+	if _body is KinematicBody2D and _body.side != side:
+		range_targets.append(_body)
+		for range_target in range_targets:
+			range_target.targeting_sprite.visible = true
+			range_target.targeting_sprite.texture = target_sprite_range
+
+func _on_attack_range_area_body_exited(_body):
+	if _body is KinematicBody2D and _body.side != side:
+		_body.targeting_sprite.visible = false
+	range_targets.erase(_body)
 

@@ -6,6 +6,8 @@ extends Node
 signal on_joystick_move(position)
 signal on_attack_button_press()
 signal on_exit_button_pressed()
+signal on_throw_button_press()
+
 
 func _ready():
 	pass
@@ -18,6 +20,9 @@ func _on_exit_button_pressed():
 
 func _on_attack_button_pressed():
 	emit_signal("on_attack_button_press")
+
+func _on_throw_button_pressed():
+	emit_signal("on_throw_button_press")
 
 func _on_player_unit_hit_point_change(hp):
 	$v_container/h_top_ui/bar/hit_point.value = hp

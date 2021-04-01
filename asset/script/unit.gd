@@ -26,6 +26,7 @@ onready var detection_area = $detection_area
 onready var sprite = $sprite
 onready var attack_delay = $attack_delay
 onready var targeting_sprite = $targeting_sprite
+onready var range_attack_delay = $range_attack_delay
 onready var audio = $audio
 onready var animation = $animation
 onready var animation_tree = $animation_tree
@@ -34,8 +35,7 @@ onready var animation_state = animation_tree.get("parameters/playback")
 # public variable
 export var attack_damage: = 15.0
 export var hit_point: = 100.0 setget _set_hit_point
-export var acceleration: = 500
-export var max_speed: = 350
+export var max_speed: = 250
 export var friction : = 500
 export var attack_distance: = 100.0 #80.0
 export var min_to_attack_distance: = 100.0 #100.0
@@ -62,13 +62,27 @@ func _physics_process(delta):
 			animation_state.travel("character_walking")
 			move_and_collide(direction * max_speed * delta)
 
-		if attack_delay.is_stopped() and distance_to_target <= attack_distance:
+		if range_attack_delay.is_stopped()  and distance_to_target > min_to_attack_distance:
+			animation_state.travel("character_attack")
+			shoot_spear(direction)
+			range_attack_delay.start()
+
+		if attack_delay.is_stopped() and distance_to_target <= min_to_attack_distance:
 			animation_state.travel("character_attack")
 			play_hit_sound()
 			target.take_damage(attack_damage)
 			attack_delay.start()
 	else:
 		animation_state.travel("character_idle")
+		
+		
+#########################################################
+# spawn spear
+func shoot_spear(dir):
+	var spear = preload("res://asset/schene/arrow.tscn").instance()
+	spear.attack_damage = attack_damage / 2
+	spear.lauching(position, dir)
+	add_child(spear)
 
 
 #########################################################
@@ -103,9 +117,8 @@ func play_dead_sound():
 	
 func _on_dead_sound_end():
 	audio.disconnect("finished",self,"_on_dead_sound_end")
-	set_physics_process(false)
-	
-	
+
+
 func play_hit_sound():
 	audio.stream = combats_sound[rng.randf_range(0,combats_sound.size())]
 	audio.play()

@@ -67,7 +67,7 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="sprite" type="Sprite" parent="."]
-position = Vector2( 0, -0.675096 )
+position = Vector2( 0, -1.44604 )
 texture = ExtResource( 1 )
 
 [node name="detection_area" type="Area2D" parent="."]
@@ -92,6 +92,10 @@ __meta__ = {
 }
 
 [node name="attack_delay" type="Timer" parent="."]
+one_shot = true
+
+[node name="range_attack_delay" type="Timer" parent="."]
+wait_time = 5.0
 one_shot = true
 
 [node name="timer_reset_target" type="Timer" parent="."]
