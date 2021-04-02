@@ -3,10 +3,9 @@ extends Control
 onready var rng = RandomNumberGenerator.new()
 
 export(float) var attack_damage = 15.0
-export(String) var entity_resources_path = "res://asset/schene/unit.tscn"
 export(int) var max_child = 5
 export(String) var side
-export(Texture) var unit_sprite
+export(String) var unit_sprite_path
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,12 +14,12 @@ func _ready():
 
 func spawn():
 	rng.randomize()
-	var spawn_entity = load(entity_resources_path).instance()
-	spawn_entity.position = Vector2(rng.randf_range(-500, 500),rng.randf_range(-500, 500))
-	spawn_entity.attack_damage = attack_damage
-	spawn_entity.texture = unit_sprite
-	spawn_entity.side = side
-	add_child(spawn_entity)
+	var spawn_unit = preload("res://asset/schene/unit.tscn").instance()
+	spawn_unit.position = Vector2(rng.randf_range(-500, 500),rng.randf_range(-500, 500))
+	spawn_unit.attack_damage = attack_damage
+	spawn_unit.texture = load(unit_sprite_path)
+	spawn_unit.side = side
+	add_child(spawn_unit)
 
 
 func _on_timer_timeout():

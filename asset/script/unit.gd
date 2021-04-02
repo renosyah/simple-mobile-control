@@ -35,6 +35,7 @@ onready var animation_state = animation_tree.get("parameters/playback")
 # public variable
 export var attack_damage: = 15.0
 export var hit_point: = 100.0 setget _set_hit_point
+export var max_hit_point: = 100.0
 export var max_speed: = 250
 export var friction : = 500
 export var attack_distance: = 100.0 #80.0
@@ -47,6 +48,7 @@ export var texture: Texture
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$hit_point.max_value = max_hit_point
 	sprite.texture = texture
 	attack_delay.wait_time = attack_delay_value
 	set_physics_process(true)
@@ -111,13 +113,8 @@ func _on_dead_animation_end():
 # unit hit and dead sound
 func play_dead_sound():
 	audio.stream = killed_sound[rng.randf_range(0,killed_sound.size())]
-	audio.connect("finished",self,"_on_dead_sound_end")
 	audio.play()
 	animation_state.travel("character_dead")
-	
-func _on_dead_sound_end():
-	audio.disconnect("finished",self,"_on_dead_sound_end")
-
 
 func play_hit_sound():
 	audio.stream = combats_sound[rng.randf_range(0,combats_sound.size())]

@@ -18,8 +18,8 @@ offset = Vector2( -95, -5 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="time_out" type="Timer" parent="."]
+[node name="life_time" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
 [connection signal="body_entered" from="." to="." method="_on_arrow_body_entered"]
-[connection signal="timeout" from="time_out" to="." method="_on_time_out_timeout"]
+[connection signal="timeout" from="life_time" to="." method="_on_time_out_timeout"]
