@@ -11,6 +11,7 @@ const combats_sound = [
 	preload("res://asset/sound/stab2.wav"),
 	preload("res://asset/sound/stab3.wav")
 ]
+const target_sprite_empty = preload("res://asset/sprite/empty_target.png")
 const target_sprite_range = preload("res://asset/sprite/target.png")
 const target_sprite_melee = preload("res://asset/sprite/target_sword.png")
 
@@ -34,14 +35,22 @@ var state = MOVE
 
 # onready variable
 onready var rng = RandomNumberGenerator.new()
+onready var collision = $collision
 onready var sprite = $sprite
 onready var targeting_sprite = $targeting_sprite
 onready var animation = $animation
 onready var animation_tree = $animation_tree
 onready var animation_state = animation_tree.get("parameters/playback")
 onready var audio = $audio
-
+onready var hit_point_bar = $hit_point
+onready var player_name_label = $player_name
+onready var respawn_timer = $respawn_timer
+onready var attack_area = $attack_area
+onready var attack_range_area = $attack_range_area
+onready var died_message = $".."/canvas/died_message
+	
 # public variable
+export var player_name = ""
 export var attack_damage: = 15.0
 export var hit_point: = 100.0 setget _set_hit_point
 export var max_hit_point: = 100.0
@@ -53,19 +62,16 @@ export var max_target: = 1
 export var side = "1"
 export var texture: Texture
 
+export var is_slave = false
+
 # slave
 slave var slave_position = Vector2.ZERO
 slave var slave_movement = Vector2.ZERO
 slave var slave_state = MOVE
 
-func init(nickname, start_position, is_slave):
-	position = start_position
-	if is_slave:
-		sprite.texture = preload("res://asset/sprite/red_knight.png")
-	
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	set_physics_process(true)
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -80,11 +86,19 @@ func _physics_process(_delta):
 # unit move state and animation
 func update_status_bar():
 	emit_signal("on_unit_ready",{ 
+		"player_name" : player_name,
 		"hit_point" : hit_point,
 		"max_hit_point" : max_hit_point,
 		"stamina_point" : stamina_point,
 		"max_stamina_point" : max_stamina_point
 	})
+	hit_point_bar.visible = is_slave
+	player_name_label.text = player_name
+	player_name_label.visible = is_slave
+	targeting_sprite.visible = is_slave
+	if is_slave:
+		sprite.texture = preload("res://asset/sprite/red_knight.png")
+	set_physics_process(true)
 
 #########################################################
 # unit move state and animation
@@ -136,13 +150,12 @@ func _on_attack_animation_end():
 
 #########################################################
 # unit hit animation functions
-func dead():
+func play_dead_animation():
 	animation_state.travel("character_dead")
-
+	
 func _on_dead_animation_end():
 	emit_signal("on_unit_died")
-	queue_free()
-	
+	rpc("start_respawn_time")
 
 #########################################################
 # unit input control from user
@@ -193,13 +206,14 @@ sync func _swing_sword():
 # unit hit sound functions
 func play_dead_sound():
 	audio.stream = killed_sound[rng.randf_range(0,killed_sound.size())]
+	audio.disconnect("finished",self,"_on_dead_sound_end")
 	audio.connect("finished",self,"_on_dead_sound_end")
 	audio.play()
 	
 func _on_dead_sound_end():
 	audio.disconnect("finished",self,"_on_dead_sound_end")
 	set_physics_process(false)
-	dead()
+	play_dead_animation()
 	
 func play_hit_sound():
 	audio.stream = combats_sound[rng.randf_range(0,combats_sound.size())]
@@ -215,6 +229,7 @@ func take_damage(damage):
 		
 func _set_hit_point(hp):
 	hit_point = max(0, hp)
+	hit_point_bar.value = hit_point
 	emit_signal("hit_point_change",hit_point)
 
 
@@ -235,13 +250,12 @@ func _on_attack_area_body_entered(_body):
 			return
 		targets.append(_body)
 		for target in targets:
-			target.targeting_sprite.visible = true
 			target.targeting_sprite.texture = target_sprite_melee
 
 # on enemy exit attack area of player unit
 func _on_attack_area_body_exited(_body):
 	if _body is KinematicBody2D and _body.side != side:
-		_body.targeting_sprite.visible = false
+		_body.targeting_sprite.texture = target_sprite_empty
 	targets.erase(_body)
 
 
@@ -251,11 +265,42 @@ func _on_attack_range_area_body_entered(_body):
 			return
 		range_targets.append(_body)
 		for range_target in range_targets:
-			range_target.targeting_sprite.visible = true
 			range_target.targeting_sprite.texture = target_sprite_range
 
 func _on_attack_range_area_body_exited(_body):
 	if _body is KinematicBody2D and _body.side != side:
-		_body.targeting_sprite.visible = false
+		_body.targeting_sprite.texture = target_sprite_empty
 	range_targets.erase(_body)
+
+#########################################################
+# respawn
+sync func start_respawn_time():
+	if !is_slave:
+		died_message.visible = true
+	respawn_timer.wait_time = 5
+	respawn_timer.start()
+	targets.clear()
+	range_targets.clear()
+	attack_area.monitoring = false
+	attack_range_area.monitoring = false
+	set_physics_process(false)
+	for child in get_children():
+		if child.has_method('hide'):
+			child.hide()
+	collision.disabled = true
+
+func _on_respawn_timer_timeout():
+	if !is_slave:
+		died_message.visible = false
+	respawn_timer.stop()
+	set_physics_process(true)
+	attack_area.monitoring = true
+	attack_range_area.monitoring = true
+	for child in get_children():
+		if child.has_method('show'):
+			child.show()
+	collision.disabled = false
+	self.hit_point = max_hit_point
+	self.stamina_point = max_stamina_point
+	update_status_bar()
 

@@ -42,7 +42,7 @@ margin_bottom = 50.0
 rect_min_size = Vector2( 134, 50 )
 size_flags_vertical = 0
 
-[node name="Label" type="Label" parent="v_container/h_top_ui/panel"]
+[node name="player_name" type="Label" parent="v_container/h_top_ui/panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 2.0
@@ -52,7 +52,6 @@ align = 1
 valign = 1
 autowrap = true
 clip_text = true
-uppercase = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

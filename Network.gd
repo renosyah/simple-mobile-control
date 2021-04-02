@@ -5,7 +5,7 @@ const DEFAULT_PORT = 31400
 const MAX_PLAYERS = 5
 
 var players = { }
-var self_data = { name = '', position = Vector2(360, 180) }
+var self_data = { name = '', side = '', position = Vector2(360, 180) }
 
 signal player_disconnected
 signal server_disconnected
@@ -30,6 +30,7 @@ func connect_to_server(player_nickname):
 
 func _connected_to_server():
 	var local_player_id = get_tree().get_network_unique_id()
+	self_data.side = str(local_player_id)
 	players[local_player_id] = self_data
 	rpc('_send_player_info', local_player_id, self_data)
 
@@ -55,17 +56,23 @@ remote func _request_players(request_from_id):
 remote func _send_player_info(id, info):
 	players[id] = info
 	var new_player = load("res://asset/schene/player.tscn").instance()
+	
+	# stats
 	new_player.name = str(id)
+	new_player. position = info.position
+	new_player.player_name = info.name
 	new_player.attack_damage = 15.0
 	new_player.max_target = 1
 	new_player.hit_point = 100.0
 	new_player.max_hit_point = 100.0
 	new_player.stamina_point = 100.0
 	new_player.max_stamina_point = 100.0
-	new_player.side = str(new_player.name)
+	new_player.side = info.side
+	new_player.is_slave = true
+	
+	
 	new_player.set_network_master(id)
 	$'/root/main/'.add_child(new_player)
-	new_player.init(info.name, info.position, true)
 	
 	
 func update_position(id, position):

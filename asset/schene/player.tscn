@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://asset/schene/player_unit.tscn" type="PackedScene" id=1]
 [ext_resource path="res://asset/schene/touch_input.tscn" type="PackedScene" id=2]
 [ext_resource path="res://asset/script/player.gd" type="Script" id=3]
+[ext_resource path="res://asset/sprite/died.jpg" type="Texture" id=4]
 
 [node name="player" type="Control"]
 script = ExtResource( 3 )
@@ -16,6 +17,16 @@ position = Vector2( 515.484, 306.384 )
 [node name="canvas" type="CanvasLayer" parent="."]
 
 [node name="touch_input" parent="canvas" instance=ExtResource( 2 )]
+
+[node name="died_message" type="TextureRect" parent="canvas"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 4 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="hit_point_change" from="player_unit" to="canvas/touch_input" method="_on_player_unit_hit_point_change"]
 [connection signal="on_unit_died" from="player_unit" to="." method="_on_player_unit_on_unit_died"]
 [connection signal="on_unit_ready" from="player_unit" to="canvas/touch_input" method="_on_player_unit_on_unit_ready"]
