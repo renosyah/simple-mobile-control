@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://asset/sprite/menu_multiplayer.png" type="Texture" id=1]
 [ext_resource path="res://asset/sprite/grass.png" type="Texture" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://asset/sprite/menu_search_multiplayer.png" type="Texture" id=5]
 [ext_resource path="res://asset/fonts/montserrat_eb_32.tres" type="DynamicFont" id=6]
 [ext_resource path="res://addons/LANServerBroadcast/server_listener/ServerListener.gd" type="Script" id=7]
+[ext_resource path="res://asset/sprite/blue_knight.png" type="Texture" id=8]
+[ext_resource path="res://asset/sprite/dice.png" type="Texture" id=9]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
@@ -162,96 +164,83 @@ smoothing_enabled = true
 
 [node name="canvas" type="CanvasLayer" parent="."]
 
-[node name="v_menu" type="VBoxContainer" parent="canvas"]
+[node name="Label" type="Label" parent="canvas"]
 anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 100.0
-margin_top = 100.0
-margin_right = -100.0
-margin_bottom = -100.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
-size_flags_vertical = 3
+custom_fonts/font = ExtResource( 6 )
+text = "Welcome"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="h_menu_input_name" type="HBoxContainer" parent="canvas/v_menu"]
-margin_right = 824.0
-margin_bottom = 52.0
-rect_min_size = Vector2( 0, 52 )
-size_flags_horizontal = 3
-custom_constants/separation = 20
+[node name="VBoxContainer" type="VBoxContainer" parent="canvas"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 96.0
 __meta__ = {
-"_editor_description_": ""
+"_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="canvas/v_menu/h_menu_input_name"]
-margin_top = 6.0
-margin_right = 193.0
-margin_bottom = 46.0
+[node name="character_sprite_chooser" type="Button" parent="canvas/VBoxContainer"]
+margin_left = 412.0
+margin_right = 612.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+size_flags_horizontal = 4
+icon = ExtResource( 8 )
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="canvas/VBoxContainer"]
+margin_left = 304.0
+margin_top = 204.0
+margin_right = 720.0
+margin_bottom = 310.0
+size_flags_horizontal = 4
+
+[node name="character_name_chooser" type="Button" parent="canvas/VBoxContainer/HBoxContainer"]
+margin_right = 300.0
+margin_bottom = 106.0
+rect_min_size = Vector2( 300, 80 )
+size_flags_horizontal = 4
 custom_fonts/font = ExtResource( 6 )
-text = "Your name:"
-align = 2
-__meta__ = {
-"_editor_description_": ""
-}
+text = "Enter Name"
 
-[node name="TextEdit" type="LineEdit" parent="canvas/v_menu/h_menu_input_name"]
-margin_left = 213.0
-margin_right = 824.0
-margin_bottom = 52.0
-rect_min_size = Vector2( 0, 24 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 6 )
+[node name="random_name_button" type="Button" parent="canvas/VBoxContainer/HBoxContainer"]
+margin_left = 304.0
+margin_right = 416.0
+margin_bottom = 106.0
+icon = ExtResource( 9 )
 
-[node name="h_menu_input_color" type="HBoxContainer" parent="canvas/v_menu"]
-margin_top = 115.0
-margin_right = 824.0
-margin_bottom = 167.0
-rect_min_size = Vector2( 0, 52 )
-size_flags_horizontal = 3
-size_flags_vertical = 6
-custom_constants/separation = 20
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="Label" type="Label" parent="canvas/v_menu/h_menu_input_color"]
-margin_top = 6.0
-margin_right = 99.0
-margin_bottom = 46.0
-custom_fonts/font = ExtResource( 6 )
-text = "Color:"
-align = 2
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="h_menu" type="HBoxContainer" parent="canvas/v_menu"]
-margin_top = 230.0
-margin_right = 824.0
-margin_bottom = 400.0
-size_flags_vertical = 3
+[node name="h_menu" type="HBoxContainer" parent="canvas"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -106.0
+size_flags_vertical = 0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="button_find_server" type="Button" parent="canvas/v_menu/h_menu"]
-margin_top = 32.0
-margin_right = 410.0
-margin_bottom = 138.0
+[node name="button_find_server" type="Button" parent="canvas/h_menu"]
+margin_right = 510.0
+margin_bottom = 106.0
 size_flags_horizontal = 7
 size_flags_vertical = 4
 text = "Find Server"
 icon = ExtResource( 5 )
 
-[node name="button_create_server" type="Button" parent="canvas/v_menu/h_menu"]
-margin_left = 414.0
-margin_top = 32.0
-margin_right = 824.0
-margin_bottom = 138.0
+[node name="button_create_server" type="Button" parent="canvas/h_menu"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 106.0
 size_flags_horizontal = 7
 size_flags_vertical = 4
 text = "Host"
@@ -260,21 +249,42 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="dialog_list_server" type="WindowDialog" parent="canvas"]
+[node name="panel_list_server" type="Panel" parent="canvas"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 300.0
-margin_top = 40.0
-margin_right = -304.0
-margin_bottom = -60.0
-window_title = "Server List"
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VScrollBar" type="ScrollContainer" parent="canvas/dialog_list_server"]
+[node name="VBoxContainer" type="VBoxContainer" parent="canvas/panel_list_server"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="canvas/panel_list_server/VBoxContainer"]
+margin_top = -1.0
+margin_right = 1024.0
+margin_bottom = 49.0
+rect_min_size = Vector2( 0, 50 )
+custom_fonts/font = ExtResource( 6 )
+text = "Server List"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VScrollBar" type="ScrollContainer" parent="canvas/panel_list_server/VBoxContainer"]
+margin_top = 54.0
+margin_right = 1024.0
+margin_bottom = 496.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
@@ -282,19 +292,88 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="canvas/dialog_list_server/VScrollBar"]
-margin_right = 420.0
-margin_bottom = 500.0
+[node name="VBoxContainer" type="VBoxContainer" parent="canvas/panel_list_server/VBoxContainer/VScrollBar"]
+margin_right = 1024.0
+margin_bottom = 442.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="close_button" type="Button" parent="canvas/panel_list_server/VBoxContainer"]
+margin_top = 500.0
+margin_right = 1024.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 6 )
+text = "Close"
+
+[node name="panel_list_sprite_chooser" type="Panel" parent="canvas"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="canvas/panel_list_sprite_chooser"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="canvas/panel_list_sprite_chooser/VBoxContainer"]
+margin_top = -1.0
+margin_right = 1024.0
+margin_bottom = 49.0
+rect_min_size = Vector2( 0, 50 )
+custom_fonts/font = ExtResource( 6 )
+text = "Skin Color"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VScrollBar" type="ScrollContainer" parent="canvas/panel_list_sprite_chooser/VBoxContainer"]
+margin_top = 54.0
+margin_right = 1024.0
+margin_bottom = 496.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="canvas/panel_list_sprite_chooser/VBoxContainer/VScrollBar"]
+columns = 4
+
+[node name="close_button" type="Button" parent="canvas/panel_list_sprite_chooser/VBoxContainer"]
+margin_top = 500.0
+margin_right = 1024.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 6 )
+text = "Close"
+
 [node name="ServerListener" type="Node" parent="."]
 script = ExtResource( 7 )
-[connection signal="text_changed" from="canvas/v_menu/h_menu_input_name/TextEdit" to="." method="_on_TextEdit_text_changed"]
-[connection signal="pressed" from="canvas/v_menu/h_menu/button_find_server" to="." method="_on_button_find_server_pressed"]
-[connection signal="pressed" from="canvas/v_menu/h_menu/button_create_server" to="." method="_on_button_create_server_pressed"]
+[connection signal="pressed" from="canvas/VBoxContainer/character_sprite_chooser" to="." method="_on_sprite_chooser_button_pressed"]
+[connection signal="pressed" from="canvas/VBoxContainer/HBoxContainer/random_name_button" to="." method="_on_random_name_button_pressed"]
+[connection signal="pressed" from="canvas/h_menu/button_find_server" to="." method="_on_button_find_server_pressed"]
+[connection signal="pressed" from="canvas/h_menu/button_create_server" to="." method="_on_button_create_server_pressed"]
+[connection signal="pressed" from="canvas/panel_list_server/VBoxContainer/close_button" to="." method="_on_server_list_close_button_pressed"]
+[connection signal="pressed" from="canvas/panel_list_sprite_chooser/VBoxContainer/close_button" to="." method="_on_sprite_chooser_close_button_pressed"]
 [connection signal="new_server" from="ServerListener" to="." method="_on_ServerListener_new_server"]
 [connection signal="remove_server" from="ServerListener" to="." method="_on_ServerListener_remove_server"]
