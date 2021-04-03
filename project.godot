@@ -28,12 +28,12 @@ _global_script_class_icons={
 
 config/name="Icon8 Knight Fight"
 config/description="simple 2d top down Icon8 Knight Fight"
-run/main_scene="res://interface/Menu.tscn"
+run/main_scene="res://asset/schene/menu.tscn"
 config/icon="res://asset/sprite/blue_knight.png"
 
 [autoload]
 
-Network="*res://Network.gd"
+Network="*res://network.gd"
 
 [editor_plugins]
 

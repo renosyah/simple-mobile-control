@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/join-pressed.png-ff405bcb265b05e5be9b779b1b88f61b.stex"
+path="res://.import/menu_search_multiplayer.png-a3f1a520e59713a0e7f5e9cb6d3f0ce4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://interface/buttons/join-pressed.png"
-dest_files=[ "res://.import/join-pressed.png-ff405bcb265b05e5be9b779b1b88f61b.stex" ]
+source_file="res://asset/sprite/menu_search_multiplayer.png"
+dest_files=[ "res://.import/menu_search_multiplayer.png-a3f1a520e59713a0e7f5e9cb6d3f0ce4.stex" ]
 
 [params]
 

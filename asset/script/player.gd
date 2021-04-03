@@ -16,6 +16,7 @@ export(float) var stamina_point
 export(float) var max_stamina_point
 export(int) var max_target
 export(String) var side
+export var texture: Texture
 
 export(bool) var is_slave = false
 
@@ -34,12 +35,14 @@ func _ready():
 	$player_unit.max_stamina_point = max_stamina_point
 	$player_unit.side = side
 	$player_unit.is_slave = is_slave
+	$player_unit.texture = texture
 	$player_unit.update_status_bar()
 	if is_slave:
 		remove_child($canvas)
 
 func _on_touch_input_on_exit_button_pressed():
-	get_tree().quit(0)
-
+	Network.disconnect_from_server()
+	get_tree().change_scene('res://asset/schene/menu.tscn')
+	
 func _on_player_unit_on_unit_died():
 	emit_signal("on_unit_died", self)

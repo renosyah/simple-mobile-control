@@ -10,7 +10,7 @@ func _ready():
 	new_player.set_network_master(get_tree().get_network_unique_id())
 	new_player.camera_node = NodePath("../main_camera")
 	
-	# stats
+	# stats for player unit
 	new_player.position = info.position
 	new_player.player_name = info.name
 	new_player.attack_damage = 15.0
@@ -21,7 +21,8 @@ func _ready():
 	new_player.max_stamina_point = 100.0
 	new_player.side = info.side
 	new_player.is_slave = false
-	new_player.side = str(new_player.name)
+	new_player.side = str(info.name)
+	new_player.texture = load(info.sprite_path)
 	
 	add_child(new_player)
 
@@ -29,5 +30,5 @@ func _on_player_disconnected(id):
 	get_node(str(id)).queue_free()
 
 func _on_server_disconnected():
-	get_tree().change_scene('res://interface/Menu.tscn')
+	get_tree().change_scene('res://asset/schene/menu.tscn')
 

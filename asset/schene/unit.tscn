@@ -1,6 +1,6 @@
 [gd_scene load_steps=26 format=2]
 
-[ext_resource path="res://asset/sprite/knight_white.png" type="Texture" id=1]
+[ext_resource path="res://asset/sprite/white_knight.png" type="Texture" id=1]
 [ext_resource path="res://asset/script/unit.gd" type="Script" id=2]
 [ext_resource path="res://asset/animation/character_walking.tres" type="Animation" id=3]
 [ext_resource path="res://asset/animation/character_idle.tres" type="Animation" id=4]
@@ -11,6 +11,7 @@
 [ext_resource path="res://asset/sprite/target.png" type="Texture" id=9]
 [ext_resource path="res://asset/sound/maledeath3.wav" type="AudioStream" id=10]
 [ext_resource path="res://asset/animation/character_dead.tres" type="Animation" id=11]
+
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 24.0

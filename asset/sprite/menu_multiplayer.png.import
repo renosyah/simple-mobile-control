@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/join.png-388dcc99f3b16ea4e70cd1eca74eae44.stex"
+path="res://.import/menu_multiplayer.png-82bf39eeb52a0404b75f157d340c226e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://interface/buttons/join.png"
-dest_files=[ "res://.import/join.png-388dcc99f3b16ea4e70cd1eca74eae44.stex" ]
+source_file="res://asset/sprite/menu_multiplayer.png"
+dest_files=[ "res://.import/menu_multiplayer.png-82bf39eeb52a0404b75f157d340c226e.stex" ]
 
 [params]
 

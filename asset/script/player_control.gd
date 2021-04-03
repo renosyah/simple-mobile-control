@@ -65,9 +65,9 @@ export var texture: Texture
 export var is_slave = false
 
 # slave
-slave var slave_position = Vector2.ZERO
-slave var slave_movement = Vector2.ZERO
-slave var slave_state = MOVE
+puppet var slave_position = Vector2.ZERO
+puppet var slave_movement = Vector2.ZERO
+puppet var slave_state = MOVE
 
 
 # Called when the node enters the scene tree for the first time.
@@ -96,8 +96,7 @@ func update_status_bar():
 	player_name_label.text = player_name
 	player_name_label.visible = is_slave
 	targeting_sprite.visible = is_slave
-	if is_slave:
-		sprite.texture = preload("res://asset/sprite/red_knight.png")
+	sprite.texture = texture
 	set_physics_process(true)
 
 #########################################################
@@ -169,9 +168,9 @@ func _on_touch_input_on_attack_button_press():
 func _input(event):
 	if is_network_master():
 		if event.is_action_pressed("attack"):
-			rpc("_throw_spear")
-		elif event.is_action_pressed("throw_spear"):
 			rpc("_swing_sword")
+		elif event.is_action_pressed("throw_spear"):
+			rpc("_throw_spear")
 		
 func _on_touch_input_on_throw_button_press():
 	if is_network_master():
@@ -200,7 +199,6 @@ sync func _swing_sword():
 	for target in targets:
 		self.stamina_point -= required_stamina
 		target.take_damage(attack_damage)
-	play_hit_sound()
 
 #########################################################
 # unit hit sound functions
@@ -223,10 +221,11 @@ func play_hit_sound():
 #########################################################
 # unit hit point and stamina functions
 func take_damage(damage):
+	play_hit_sound()
 	self.hit_point -= damage
 	if self.hit_point <= 0.0:
 		play_dead_sound()
-		
+	
 func _set_hit_point(hp):
 	hit_point = max(0, hp)
 	hit_point_bar.value = hit_point

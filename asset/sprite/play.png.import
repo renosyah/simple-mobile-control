@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/create-pressed.png-807b29ee57dd5d8cf40d8ca4e147cfb6.stex"
+path="res://.import/play.png-7fad5546564e48b8102ea24a26494845.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://interface/buttons/create-pressed.png"
-dest_files=[ "res://.import/create-pressed.png-807b29ee57dd5d8cf40d8ca4e147cfb6.stex" ]
+source_file="res://asset/sprite/play.png"
+dest_files=[ "res://.import/play.png-7fad5546564e48b8102ea24a26494845.stex" ]
 
 [params]
 
