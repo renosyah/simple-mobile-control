@@ -8,10 +8,12 @@ signal on_joystick_move(position)
 signal on_attack_button_press()
 signal on_exit_button_pressed()
 signal on_throw_button_press()
+signal on_spawn_button_press()
 
 func _ready():
 	if DEKSTOP_DEVICE_OS.has(OS.get_name()):
-		$v_container/h_input_ui.visible = false
+		$v_container/h_input_ui/left_input.visible = false
+		$v_container/h_input_ui/right_input.visible = false
 
 func _on_touchscreen_input_joystick(position):
 	emit_signal("on_joystick_move",position)
@@ -41,3 +43,7 @@ func _on_player_unit_on_unit_ready(status_bar_data):
 func _on_player_unit_enemy_in_range(is_attackable):
 	$v_container/h_input_ui/right_input/attack_button.visible = is_attackable
 
+
+
+func _on_spawn_troop_button_pressed():
+	emit_signal("on_spawn_button_press")

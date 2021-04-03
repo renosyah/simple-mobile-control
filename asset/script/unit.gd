@@ -18,7 +18,7 @@ const combats_sound = [
 # mutable variable
 var is_dead = false
 var target: KinematicBody2D = null
-
+var velocity = Vector2.ZERO
 
 # onready variable
 onready var rng = RandomNumberGenerator.new()
@@ -45,6 +45,9 @@ export var attack_delay_value: = 1.0
 export var side = "player"
 export var texture: Texture
 
+# slave
+puppet var slave_position = Vector2.ZERO
+puppet var slave_movement = Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -52,35 +55,49 @@ func _ready():
 	sprite.texture = texture
 	attack_delay.wait_time = attack_delay_value
 	set_physics_process(true)
-	
 
 func _physics_process(delta):
-	if is_instance_valid(target):
-		var direction = (target.global_position - global_position).normalized()
-		var distance_to_target = global_position.distance_to(target.global_position)
-		sprite.flip_h = direction.x < 0
-	
-		if distance_to_target >= min_to_attack_distance and distance_to_target < max_to_attack_distance:
-			animation_state.travel("character_walking")
-			move_and_collide(direction * max_speed * delta)
-
-		if range_attack_delay.is_stopped()  and distance_to_target > min_to_attack_distance:
-			animation_state.travel("character_attack")
-			shoot_spear(direction)
-			range_attack_delay.start()
-
-		if attack_delay.is_stopped() and distance_to_target <= min_to_attack_distance:
-			animation_state.travel("character_attack")
-			play_hit_sound()
-			target.take_damage(attack_damage)
-			attack_delay.start()
-	else:
-		animation_state.travel("character_idle")
+	if is_network_master():
+		if is_instance_valid(target):
+			var direction = (target.global_position - global_position).normalized()
+			var distance_to_target = global_position.distance_to(target.global_position)
+			sprite.flip_h = direction.x < 0
 		
+			if distance_to_target >= min_to_attack_distance and distance_to_target < max_to_attack_distance:
+				animation_state.travel("character_walking")
+				velocity = direction * max_speed * delta
+				move_and_collide(velocity)
+
+			if range_attack_delay.is_stopped() and distance_to_target > min_to_attack_distance:
+				animation_state.travel("character_attack")
+				rpc("shoot_spear", direction)
+				range_attack_delay.start()
+
+			if attack_delay.is_stopped() and distance_to_target <= min_to_attack_distance:
+				animation_state.travel("character_attack")
+				play_hit_sound()
+				target.take_damage(attack_damage)
+				attack_delay.start()
+			
+		else:
+			animation_state.travel("character_idle")
+			
+		rset_unreliable('slave_position', position)
+		rset('slave_movement', velocity)	
+			
+	else:
+		position = slave_position
+		
+		if slave_movement != Vector2.ZERO:
+			animation_state.travel("character_walking")
+		else:
+			animation_state.travel("character_idle")
+
+		move_and_collide(slave_movement)
 		
 #########################################################
 # spawn spear
-func shoot_spear(dir):
+sync func shoot_spear(dir):
 	var spear = preload("res://asset/schene/arrow.tscn").instance()
 	spear.attack_damage = attack_damage / 2
 	spear.lauching(position, dir)
@@ -95,7 +112,7 @@ func take_damage(damage):
 		set_physics_process(false)
 		target = null
 		is_dead = true
-		play_dead_sound()
+		rpc("play_dead_sound")
 		
 
 func _set_hit_point(hp):
@@ -111,7 +128,7 @@ func _on_dead_animation_end():
 
 #########################################################
 # unit hit and dead sound
-func play_dead_sound():
+sync func play_dead_sound():
 	audio.stream = killed_sound[rng.randf_range(0,killed_sound.size())]
 	audio.play()
 	animation_state.travel("character_dead")

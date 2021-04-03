@@ -67,7 +67,7 @@ export var is_slave = false
 # slave
 puppet var slave_position = Vector2.ZERO
 puppet var slave_movement = Vector2.ZERO
-puppet var slave_state = MOVE
+puppet var slave_hp = hit_point
 
 
 # Called when the node enters the scene tree for the first time.
@@ -220,16 +220,18 @@ func play_hit_sound():
 #########################################################
 # unit hit point and stamina functions
 func take_damage(damage):
-	play_hit_sound()
-	self.hit_point -= damage
-	if self.hit_point <= 0.0:
-		play_dead_sound()
+	rpc("update_remote_hit_point", damage)
 	
 func _set_hit_point(hp):
 	hit_point = max(0, hp)
 	hit_point_bar.value = hit_point
 	emit_signal("hit_point_change",hit_point)
 
+sync func update_remote_hit_point(damage):
+	play_hit_sound()
+	self.hit_point -= damage
+	if self.hit_point <= 0.0:
+		play_dead_sound()
 
 func _set_stamina_point(sp):
 	stamina_point = max(0, sp)

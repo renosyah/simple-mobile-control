@@ -65,7 +65,7 @@ remote func _send_player_info(id, info):
 	
 	# stats stats for player slave unit
 	new_player.name = str(id)
-	new_player. position = info.position
+	new_player.position  = info.position
 	new_player.player_name = info.name
 	new_player.attack_damage = 15.0
 	new_player.max_target = 1
