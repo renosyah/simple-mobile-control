@@ -5,6 +5,7 @@ const DEFAULT_PORT = 31400
 const DEFAULT_ADVERTISE_PORT = 31401
 const MAX_PLAYERS = 5
 
+var rng = RandomNumberGenerator.new()
 var players = { }
 var self_data = { name = '', side = '', sprite_path = 'res://asset/sprite/knight_white.png', position = Vector2(360, 180) }
 
@@ -16,16 +17,20 @@ func _ready():
 	get_tree().connect('network_peer_connected', self, '_on_player_connected')
 
 func create_server(port :int = DEFAULT_PORT, player_nickname:String = "", sprite_path:String= 'res://asset/sprite/knight_white.png'):
+	rng.randomize()
 	self_data.name = player_nickname
 	self_data.sprite_path = sprite_path
+	self_data.position = Vector2(rng.randf_range(-400, 400),rng.randf_range(-400, 400))
 	players[1] = self_data
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(DEFAULT_PORT, MAX_PLAYERS)
 	get_tree().set_network_peer(peer)
 
 func connect_to_server(ip:String = DEFAULT_IP,port :int = DEFAULT_PORT, player_nickname:String = "", sprite_path:String= 'res://asset/sprite/knight_white.png'):
+	rng.randomize()
 	self_data.name = player_nickname
 	self_data.sprite_path = sprite_path
+	self_data.position = Vector2(rng.randf_range(-400, 400),rng.randf_range(-400, 400))
 	get_tree().connect('connected_to_server', self, '_connected_to_server')
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(ip,port)

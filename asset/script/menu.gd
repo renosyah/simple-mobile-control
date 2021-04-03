@@ -28,13 +28,11 @@ onready var character_sprite_chooser = $canvas/VBoxContainer/character_sprite_ch
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	load_save()
 	ready_sprite_chooser()
-	var load_file = save_game.loadGame()
-	if load_file != null:
-		_player_name = load_file["player_name"]
-		_player_sprite_path = load_file["player_sprite_path"]
-		button_choose_name.text = _player_name
-		character_sprite_chooser.icon = load(_player_sprite_path)
+	button_choose_name.text = _player_name
+	character_sprite_chooser.icon = load(_player_sprite_path)
+
 
 func save():
 	var save_file = {
@@ -43,8 +41,15 @@ func save():
 	}
 	save_game.saveGame(save_file)
 
-
-
+func load_save():
+	var load_file = save_game.loadGame()
+	if load_file != null:
+		_player_name = load_file["player_name"]
+		_player_sprite_path = load_file["player_sprite_path"]
+	else:
+		_player_name = random_name.new()
+		_player_sprite_path = "res://asset/sprite/blue_knight.png"
+		
 func _on_random_name_button_pressed():
 	var names = random_name.new()
 	_player_name = names.generate()
