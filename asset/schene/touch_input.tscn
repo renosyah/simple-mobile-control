@@ -96,7 +96,7 @@ margin_bottom = 50.0
 rect_min_size = Vector2( 100, 50 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
-text = "Exit"
+text = "Menu"
 
 [node name="h_input_ui" type="HBoxContainer" parent="v_container"]
 margin_top = 104.0

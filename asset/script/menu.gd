@@ -14,6 +14,8 @@ var sprite_options = [
 	"res://asset/sprite/white_knight.png"
 ]
 
+var list_server = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	for b in sprite_options:
@@ -45,12 +47,41 @@ func _on_TextEdit_text_changed(new_text):
 func _on_button_create_server_pressed():
 	if _player_name == "" and _player_sprite_path == "":
 		return
-	Network.create_server(31400,_player_name,_player_sprite_path)
+	Network.create_server(Network.DEFAULT_PORT,_player_name,_player_sprite_path)
 	_load_game()
 
 
 func _on_button_find_server_pressed():
+	$canvas/dialog_list_server.show()
+	
+func _on_ServerListener_new_server(serverInfo):
+	list_server.append(serverInfo)
+	show_list_item_server()
+
+func show_list_item_server():
+	for child in $canvas/dialog_list_server/VScrollBar/VBoxContainer.get_children():
+		child.disconnect("pressed",self,"_connect_to_server")
+		$canvas/dialog_list_server/VScrollBar/VBoxContainer.remove_child(child)
+		
+	for s in list_server:
+		var button = preload("res://asset/schene/item_server.tscn").instance()
+		button.init_item(s)
+		button.connect("pressed",self,"_connect_to_server",[s])
+		$canvas/dialog_list_server/VScrollBar/VBoxContainer.add_child(button)
+
+func _on_ServerListener_remove_server(ip):
+	var info = {}
+	for s in list_server:
+		if s.ip == ip:
+			info = s
+			break
+	list_server.erase(info)
+	show_list_item_server()
+	
+func _connect_to_server(serverInfo):
 	if _player_name == "" and _player_sprite_path == "":
 		return
-	Network.connect_to_server("10.42.0.1", 31400, _player_name,_player_sprite_path)
+	Network.connect_to_server(serverInfo.ip,serverInfo.port,_player_name,_player_sprite_path)
 	_load_game()
+
+

@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://asset/script/main.gd" type="Script" id=1]
 [ext_resource path="res://asset/script/tile_generator.gd" type="Script" id=2]
 [ext_resource path="res://asset/sprite/grass.png" type="Texture" id=3]
+[ext_resource path="res://addons/LANServerBroadcast/server_advertiser/ServerAdvertiser.gd" type="Script" id=4]
 [ext_resource path="res://asset/sprite/stone.png" type="Texture" id=5]
 [ext_resource path="res://asset/sprite/died.jpg" type="Texture" id=10]
 
@@ -138,6 +139,7 @@ points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 
 [node name="main" type="Node"]
 script = ExtResource( 1 )
+advertiserPath = NodePath("ServerAdvertiser")
 
 [node name="tile_map" type="TileMap" parent="."]
 tile_set = SubResource( 4 )
@@ -161,3 +163,6 @@ __meta__ = {
 [node name="main_camera" type="Camera2D" parent="."]
 current = true
 smoothing_enabled = true
+
+[node name="ServerAdvertiser" type="Node" parent="."]
+script = ExtResource( 4 )

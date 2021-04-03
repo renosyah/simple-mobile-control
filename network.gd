@@ -2,6 +2,7 @@ extends Node
 
 const DEFAULT_IP = '127.0.0.1'
 const DEFAULT_PORT = 31400
+const DEFAULT_ADVERTISE_PORT = 31401
 const MAX_PLAYERS = 5
 
 var players = { }
@@ -70,10 +71,8 @@ remote func _send_player_info(id, info):
 	new_player.is_slave = true
 	new_player.texture = load(info.sprite_path)
 	
-	
 	new_player.set_network_master(id)
 	$'/root/main/'.add_child(new_player)
-	
 	
 func update_position(id, position):
 	players[id].position = position

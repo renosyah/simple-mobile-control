@@ -1,5 +1,8 @@
 extends Node
 
+const MOBILE_DEVICE_OS = ["Android", "iOS"]
+const DEKSTOP_DEVICE_OS = ["Windows","X11"]
+
 # broadcast to outside schene signal
 signal on_joystick_move(position)
 signal on_attack_button_press()
@@ -7,7 +10,8 @@ signal on_exit_button_pressed()
 signal on_throw_button_press()
 
 func _ready():
-	pass
+	if DEKSTOP_DEVICE_OS.has(OS.get_name()):
+		$v_container/h_input_ui.visible = false
 
 func _on_touchscreen_input_joystick(position):
 	emit_signal("on_joystick_move",position)

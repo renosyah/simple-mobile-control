@@ -134,7 +134,6 @@ func move_unit(_delta):
 
 		move_and_collide(velocity)
 		
-		
 	if get_tree().is_network_server():
 		Network.update_position(int(get_parent().name), position)
 
