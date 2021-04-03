@@ -1,19 +1,17 @@
 extends Node
 
-export (NodePath) var advertiserPath: NodePath
-onready var advertiser := get_node(advertiserPath)
+onready var rng = RandomNumberGenerator.new()
+
+export(String) var entity_resources_path = "res://asset/schene/unit.tscn"
+export(int) var max_child = 5
+export(String) var side = "bandit"
+export(Texture) var unit_sprite = preload("res://asset/sprite/red_knight.png")
 
 func _ready():
 	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
 	get_tree().connect('server_disconnected', self, '_on_server_disconnected')
 	
 	var info = Network.self_data
-	
-	# Set this lobby's info to be advertised
-	advertiser.serverInfo["host_name"] = info.name
-	advertiser.serverInfo["server_device"] = OS.get_name()
-	advertiser.serverInfo["port"] = Network.DEFAULT_PORT
-	advertiser.serverInfo["public"] = true
 
 	var new_player = preload("res://asset/schene/player.tscn").instance()
 	new_player.name = str(get_tree().get_network_unique_id())
@@ -31,7 +29,7 @@ func _ready():
 	new_player.max_stamina_point = 100.0
 	new_player.side = info.side
 	new_player.is_slave = false
-	new_player.side = str(info.name)
+	new_player.side = "player"
 	new_player.texture = load(info.sprite_path)
 	
 	add_child(new_player)
@@ -42,3 +40,15 @@ func _on_player_disconnected(id):
 
 func _on_server_disconnected():
 	get_tree().change_scene('res://asset/schene/menu.tscn')
+
+func spawn_ai():
+	rng.randomize()
+	var spawn_entity = load(entity_resources_path).instance()
+	spawn_entity.position = Vector2(rng.randf_range(-500, 500),rng.randf_range(-500, 500))
+	spawn_entity.texture = unit_sprite
+	spawn_entity.side = side
+	add_child(spawn_entity)
+
+
+func _on_enemy_spawn_delay_timeout():
+	spawn_ai()

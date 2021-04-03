@@ -13,7 +13,7 @@
 [ext_resource path="res://asset/sprite/bow.png.png" type="Texture" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 168, 248 )
+extents = Vector2( 384, 548 )
 
 [node name="touch_input" type="Node"]
 script = ExtResource( 5 )
@@ -137,7 +137,7 @@ pressed = ExtResource( 2 )
 script = ExtResource( 4 )
 
 [node name="shape" type="CollisionShape2D" parent="v_container/h_input_ui/left_input/area"]
-position = Vector2( 168, 344 )
+position = Vector2( -32, 604 )
 shape = SubResource( 1 )
 
 [node name="center_input" type="Control" parent="v_container/h_input_ui"]

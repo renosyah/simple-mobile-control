@@ -3,8 +3,7 @@ extends Control
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-const save_file_path = "user://save_file_path.json";
-const save_file_password = "fwegfuywe7r632r732fdjghfvjhfesedwfcdewqyhfewjf"
+var save_game = load("res://asset/script/save_game.gd").new()
 
 var _player_name = ""
 var random_name = load("res://asset/script/random_names.gd")
@@ -30,7 +29,7 @@ onready var character_sprite_chooser = $canvas/VBoxContainer/character_sprite_ch
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	ready_sprite_chooser()
-	var load_file = loadGame(save_file_path)
+	var load_file = save_game.loadGame()
 	if load_file != null:
 		_player_name = load_file["player_name"]
 		_player_sprite_path = load_file["player_sprite_path"]
@@ -42,22 +41,8 @@ func save():
 		"player_name":_player_name,
 		"player_sprite_path":_player_sprite_path
 	}
-	saveGame(save_file_path,save_file)
+	save_game.saveGame(save_file)
 
-func saveGame(file_name,data):
-	var file = File.new()
-	file.open_encrypted_with_pass(file_name, File.WRITE,save_file_password)
-	file.store_var(to_json(data), true)
-	file.close()
-
-func loadGame(file_name):
-	var loadParam = null
-	var file = File.new()
-	if file.file_exists(file_name):
-		file.open_encrypted_with_pass(file_name, File.READ,save_file_password)
-		loadParam = parse_json(file.get_var(true))
-	file.close()
-	return loadParam
 
 
 func _on_random_name_button_pressed():
@@ -80,10 +65,18 @@ func _on_panel_list_sprite_item_choose(choosed_sprite):
 	_player_sprite_path = choosed_sprite
 	character_sprite_chooser.icon = load(_player_sprite_path)
 	_on_sprite_chooser_close_button_pressed()
+	ready_sprite_chooser()
 
 func _load_game():
 	get_tree().change_scene("res://asset/schene/main.tscn")
 
+func _on_button_single_player_pressed():
+	if _player_name == "" and _player_sprite_path == "":
+		return
+	save()
+	Network.create_server(Network.DEFAULT_PORT,_player_name,_player_sprite_path)
+	get_tree().change_scene("res://asset/schene/main_single.tscn")
+	
 func _on_button_create_server_pressed():
 	if _player_name == "" and _player_sprite_path == "":
 		return
@@ -104,8 +97,9 @@ func _on_sprite_chooser_close_button_pressed():
 	panel_list_sprite_chooser.visible = false
 		
 func _on_ServerListener_new_server(serverInfo):
-	list_server.append(serverInfo)
-	show_list_item_server()
+	if serverInfo["public"]:
+		list_server.append(serverInfo)
+		show_list_item_server()
 
 func show_list_item_server():
 	for child in server_list_container.get_children():
@@ -133,5 +127,3 @@ func _connect_to_server(serverInfo):
 	save()
 	Network.connect_to_server(serverInfo.ip,serverInfo.port,_player_name,_player_sprite_path)
 	_load_game()
-
-

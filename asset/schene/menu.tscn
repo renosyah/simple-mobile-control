@@ -218,37 +218,6 @@ margin_right = 416.0
 margin_bottom = 106.0
 icon = ExtResource( 9 )
 
-[node name="h_menu" type="HBoxContainer" parent="canvas"]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -106.0
-size_flags_vertical = 0
-alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="button_find_server" type="Button" parent="canvas/h_menu"]
-margin_right = 510.0
-margin_bottom = 106.0
-size_flags_horizontal = 7
-size_flags_vertical = 4
-text = "Find Server"
-icon = ExtResource( 5 )
-
-[node name="button_create_server" type="Button" parent="canvas/h_menu"]
-margin_left = 514.0
-margin_right = 1024.0
-margin_bottom = 106.0
-size_flags_horizontal = 7
-size_flags_vertical = 4
-text = "Host"
-icon = ExtResource( 1 )
-__meta__ = {
-"_editor_description_": ""
-}
-
 [node name="panel_list_server" type="Panel" parent="canvas"]
 visible = false
 anchor_right = 1.0
@@ -367,13 +336,57 @@ size_flags_vertical = 0
 custom_fonts/font = ExtResource( 6 )
 text = "Close"
 
+[node name="h_menu" type="HBoxContainer" parent="canvas"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -106.0
+size_flags_vertical = 0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="button_single_player" type="Button" parent="canvas/h_menu"]
+margin_right = 338.0
+margin_bottom = 106.0
+size_flags_horizontal = 7
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 6 )
+text = "Play"
+icon = ExtResource( 8 )
+
+[node name="button_create_server" type="Button" parent="canvas/h_menu"]
+margin_left = 342.0
+margin_right = 681.0
+margin_bottom = 106.0
+size_flags_horizontal = 7
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 6 )
+text = "Host"
+icon = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="button_find_server" type="Button" parent="canvas/h_menu"]
+margin_left = 685.0
+margin_right = 1024.0
+margin_bottom = 106.0
+size_flags_horizontal = 7
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 6 )
+text = "Join"
+icon = ExtResource( 5 )
+
 [node name="ServerListener" type="Node" parent="."]
 script = ExtResource( 7 )
 [connection signal="pressed" from="canvas/VBoxContainer/character_sprite_chooser" to="." method="_on_sprite_chooser_button_pressed"]
 [connection signal="pressed" from="canvas/VBoxContainer/HBoxContainer/random_name_button" to="." method="_on_random_name_button_pressed"]
-[connection signal="pressed" from="canvas/h_menu/button_find_server" to="." method="_on_button_find_server_pressed"]
-[connection signal="pressed" from="canvas/h_menu/button_create_server" to="." method="_on_button_create_server_pressed"]
 [connection signal="pressed" from="canvas/panel_list_server/VBoxContainer/close_button" to="." method="_on_server_list_close_button_pressed"]
 [connection signal="pressed" from="canvas/panel_list_sprite_chooser/VBoxContainer/close_button" to="." method="_on_sprite_chooser_close_button_pressed"]
+[connection signal="pressed" from="canvas/h_menu/button_single_player" to="." method="_on_button_single_player_pressed"]
+[connection signal="pressed" from="canvas/h_menu/button_create_server" to="." method="_on_button_create_server_pressed"]
+[connection signal="pressed" from="canvas/h_menu/button_find_server" to="." method="_on_button_find_server_pressed"]
 [connection signal="new_server" from="ServerListener" to="." method="_on_ServerListener_new_server"]
 [connection signal="remove_server" from="ServerListener" to="." method="_on_ServerListener_remove_server"]

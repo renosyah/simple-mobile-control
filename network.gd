@@ -32,7 +32,8 @@ func connect_to_server(ip:String = DEFAULT_IP,port :int = DEFAULT_PORT, player_n
 	get_tree().set_network_peer(peer)
 
 func disconnect_from_server():
-	get_tree().get_network_peer().close_connection()
+	if is_instance_valid(get_tree().get_network_peer()):
+		get_tree().get_network_peer().close_connection()
 
 func _connected_to_server():
 	var local_player_id = get_tree().get_network_unique_id()
