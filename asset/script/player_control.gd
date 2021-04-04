@@ -67,7 +67,6 @@ export var is_slave = false
 # slave
 puppet var slave_position = Vector2.ZERO
 puppet var slave_movement = Vector2.ZERO
-puppet var slave_hp = hit_point
 
 
 # Called when the node enters the scene tree for the first time.

@@ -84,7 +84,7 @@ func _physics_process(delta):
 			
 		rset_unreliable('slave_position', position)
 		rset('slave_movement', velocity)	
-			
+
 	else:
 		position = slave_position
 		

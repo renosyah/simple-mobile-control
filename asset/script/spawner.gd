@@ -11,11 +11,9 @@ export(Texture) var texture = preload("res://asset/sprite/blue_knight.png")
 func _ready():
 	pass
 
-remotesync func spawn(pos):
+func spawn():
 	var spawn_unit = preload("res://asset/schene/unit.tscn").instance()
-	spawn_unit.name = "pion_" + str(get_tree().get_network_unique_id())
-	spawn_unit.set_network_master(get_tree().get_network_unique_id())
-	spawn_unit.position = pos
+	spawn_unit.position = $".."/player_unit.position
 	spawn_unit.attack_damage = attack_damage
 	spawn_unit.hit_point = hit_point
 	spawn_unit.max_hit_point = max_hit_point
@@ -23,7 +21,3 @@ remotesync func spawn(pos):
 	spawn_unit.side = side
 	add_child(spawn_unit)
  
-
-func _on_touch_input_on_spawn_button_press():
-	if get_children().size() < (max_unit + 1):
-		rpc("spawn",$".."/player_unit.position)

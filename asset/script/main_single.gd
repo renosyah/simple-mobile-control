@@ -1,11 +1,7 @@
 extends Node
 
 onready var rng = RandomNumberGenerator.new()
-
-export(String) var entity_resources_path = "res://asset/schene/unit.tscn"
-export(int) var max_child = 5
-export(String) var side = "bandit"
-export(Texture) var unit_sprite = preload("res://asset/sprite/red_knight.png")
+ 
 
 func _ready():
 	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
@@ -43,10 +39,10 @@ func _on_server_disconnected():
 
 func spawn_ai():
 	rng.randomize()
-	var spawn_entity = load(entity_resources_path).instance()
+	var spawn_entity = preload("res://asset/schene/unit.tscn").instance()
 	spawn_entity.position = Vector2(rng.randf_range(-500, 500),rng.randf_range(-500, 500))
-	spawn_entity.texture = unit_sprite
-	spawn_entity.side = side
+	spawn_entity.texture = preload("res://asset/sprite/red_knight.png")
+	spawn_entity.side = "bandit"
 	add_child(spawn_entity)
 
 

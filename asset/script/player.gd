@@ -4,7 +4,6 @@ signal on_unit_died(node)
 
 onready var remote_transform = RemoteTransform2D.new()
 onready var player_unit = $player_unit
-onready var spawner = $spawner
 
 export(Vector2) var position
 export(NodePath) var camera_node
@@ -39,13 +38,6 @@ func _ready():
 	player_unit.is_slave = is_slave
 	player_unit.texture = texture
 	player_unit.update_status_bar()
-	
-	spawner.attack_damage = 5.0
-	spawner.hit_point = 10
-	spawner.max_hit_point = 10
-	spawner.max_unit = 5
-	spawner.side = side
-	spawner.texture = texture
 	
 	if is_slave:
 		remove_child($canvas)
